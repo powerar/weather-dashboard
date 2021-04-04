@@ -1,15 +1,38 @@
 var city = "";
 var currentEl = document.querySelector("#current");
+var cityList = document.querySelector("#city-list");
+
+var cities = [];
 
 $("button").click(function() {
-    debugger;
     var searchCity = $("input[id='city'").val();
     city = searchCity;
     getWeather(city);
+    cities.push(city);
+    var cityEl = document.createElement("li");
+    cityEl.textContent = city;
+    cityList.appendChild(cityEl);
+    saveCities();
+    $("#current").empty();
+    $("#forecast").empty();
 });
 
+var saveCities = function() {
+    localStorage.setItem("cities", cities);
+}
+
+var loadCities = function() {
+    var loadedCities = JSON.parse(localStorage.getItem("cities"));
+    cities = loadedCities;
+    console.log(cities);
+    for (i = 0; i < cities.length; i++) {
+        var cityEl = document.createElement("li");
+        cityEl.textContent = cities[i];
+        cityList.appendChild(cityEl);
+    }
+};
+
 var getWeather = function (city) {
-    debugger;
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather/?q=" + city + "&units=metric" + "&appid=81e7518916e98ea8c25fc5e8ce330a50";
     fetch(apiUrl).then(function (response) {
         if (response.ok) {
@@ -33,7 +56,6 @@ var getForecast = function (geo) {
 };
 
 var displayForecast = function (forecast) {
-    debugger;
     for (i = 1; i < forecast.daily.length; i++) {
         var forecastEl = document.createElement("div");
         forecastEl.classList.add("card");
@@ -45,7 +67,6 @@ var displayForecast = function (forecast) {
         forecastEl.appendChild(bodyEl);
 
         var date = forecast.daily[i].dt * 1000;
-        console.log(date);
 
         dailyEl.classList.add("card-title");
         dailyEl.textContent = moment(date).format("MMMM Do YYYY");
@@ -88,3 +109,4 @@ var displayWeather = function (weather) {
 };
 
 
+loadCities();
