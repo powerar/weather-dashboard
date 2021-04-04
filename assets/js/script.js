@@ -1,33 +1,33 @@
+var cities = [];
 var city = "";
 var currentEl = document.querySelector("#current");
 var cityList = document.querySelector("#city-list");
 
-var cities = [];
+
 
 $("button").click(function() {
+    debugger;
     var searchCity = $("input[id='city'").val();
     city = searchCity;
+    cities.toString(cities.push(city));
     getWeather(city);
-    cities.push(city);
+    saveCities(cities);
     var cityEl = document.createElement("li");
     cityEl.textContent = city;
     cityList.appendChild(cityEl);
-    saveCities();
     $("#current").empty();
     $("#forecast").empty();
 });
 
-var saveCities = function() {
-    localStorage.setItem("cities", cities);
+var saveCities = function(cities) {
+    localStorage.setItem("cities", JSON.stringify(cities));
 }
 
 var loadCities = function() {
     var loadedCities = JSON.parse(localStorage.getItem("cities"));
-    cities = loadedCities;
-    console.log(cities);
-    for (i = 0; i < cities.length; i++) {
+    for (i = 0; i < loadedCities.length; i++) {
         var cityEl = document.createElement("li");
-        cityEl.textContent = cities[i];
+        cityEl.textContent = loadedCities[i];
         cityList.appendChild(cityEl);
     }
 };
