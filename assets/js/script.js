@@ -135,8 +135,6 @@ var displayWeather = function (weather) {
 loadCities();
 
 $("button").click(function() {
-    debugger;
-    console.log($(this));
     var searchCity = $(this)[0].textContent;
     city = searchCity;
     getWeather(city);
